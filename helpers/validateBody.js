@@ -1,12 +1,18 @@
+// helpers/validateBody.js
 import HttpError from "./HttpError.js";
 
 const validateBody = (schema) => {
-  const func = (req, _, next) => {
-    const { error } = schema.validate(req.body);
+  const func = (req, res, next) => {
+    const { error } = schema.validate(req.body, { abortEarly: false });
+
     if (error) {
-      next(HttpError(400, error.message));
+      const errorMessage = error.details
+        .map((detail) => detail.message)
+        .join(", ");
+      next(HttpError(400, `Validation error: ${errorMessage}`));
+    } else {
+      next();
     }
-    next();
   };
 
   return func;
