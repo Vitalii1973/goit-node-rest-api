@@ -1,8 +1,10 @@
-import express from "express";
-import morgan from "morgan";
-import cors from "cors";
+const express = require("express");
+const morgan = require("morgan");
+const cors = require("cors");
+const mongoose = require("./db.js");
 
-import contactsRouter from "./routes/contactsRouter.js";
+const contactsRouter = require("./routes/contactsRouter.js");
+const favoriteRouter = require("./routes/favoriteRouter.js"); // Імпортуйте маршрутизатор favoriteRouter
 
 const app = express();
 
@@ -10,7 +12,10 @@ app.use(morgan("tiny"));
 app.use(cors());
 app.use(express.json());
 
+mongoose();
+
 app.use("/api/contacts", contactsRouter);
+app.use("/api/contacts", favoriteRouter); // Використовуйте favoriteRouter після contactsRouter
 
 app.use((_, res) => {
   res.status(404).json({ message: "Route not found" });
