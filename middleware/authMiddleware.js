@@ -1,16 +1,21 @@
+require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
 const HttpError = require("../helpers/HttpError");
 
+const secretKey = process.env.JWT_SECRET || "default_secret_key";
+
 const authMiddleware = async (req, res, next) => {
   try {
-    const token = req.headers.authorization?.split(" ")[1];
+    const authHeader = req.headers.authorization;
 
-    if (!token) {
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
       throw new HttpError(401, "Not authorized");
     }
 
-    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+    const token = authHeader.split(" ")[1];
+
+    const decodedToken = jwt.verify(token, secretKey);
     if (!decodedToken) {
       throw new HttpError(401, "Not authorized");
     }
@@ -26,7 +31,10 @@ const authMiddleware = async (req, res, next) => {
 
     next();
   } catch (error) {
-    next(error);
+    console.error("Error in authMiddleware:", error.message);
+    return res
+      .status(error.statusCode || 500)
+      .json({ message: error.message || "Server error" });
   }
 };
 
