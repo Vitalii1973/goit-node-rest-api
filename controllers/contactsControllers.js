@@ -1,11 +1,9 @@
-import contactsService from "../services/contactsServices.js";
+// contactsControllers.js;
 
-export const getAllContacts = (req, res) => {};
+const contactsService = require("../services/contactsServices.js");
 
-export const getOneContact = (req, res) => {};
-
-export const deleteContact = (req, res) => {};
-
-export const createContact = (req, res) => {};
-
-export const updateContact = (req, res) => {};
+exports.getAllContacts = (req, res) => {};
+exports.getOneContact = (req, res) => {};
+exports.deleteContact = (req, res) => {};
+exports.createContact = (req, res) => {};
+exports.updateContact = (req, res) => {};

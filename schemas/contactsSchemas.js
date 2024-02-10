@@ -1,5 +1,5 @@
-import Joi from "joi";
+// const Joi = require("joi");
 
-export const createContactSchema = Joi.object({});
+// exports.createContactSchema = Joi.object({});
 
-export const updateContactSchema = Joi.object({});
+// exports.updateContactSchema = Joi.object({});
